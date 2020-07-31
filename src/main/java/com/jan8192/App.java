@@ -31,7 +31,9 @@ import java.net.Proxy.Type;
  */
 public class App {
 
+    public static final String MY_WORD_MORE_LIKE_SENTENCE = "Umwertung aller Werte, das ist meine Formel für einen Akt höchster Selbstbesinnung der Menschheit, der in mir Fleisch und Genie geworden ist";
 
+    public static final String URL = "https://www.surveymonkey.com/r/7JZRVLJ?embedded=1";
 
     private static List<String> getUserAgents() throws IOException {
         List<String> userAgents = new ArrayList<>();
@@ -59,7 +61,7 @@ public class App {
         // oh well....
         var proxyStrings = doc.body().toString().replace("<body>", "").replace("</body>", "").split(" "); 
 
-        System.out.println("Fetched proxies succesfully");
+        System.out.println("[INFO] Fetched proxies succesfully");
 
 
         List<Proxy> proxies = new ArrayList<>(); 
@@ -88,18 +90,30 @@ public class App {
         var userAgents = getUserAgents();
         Random rng = new Random();
 
+       
+
 
         var proxies = getProxies();
 
         var latch = new CountDownLatch(proxies.size() -1);
+
+        System.out.println("[INFO] Proxy amount:" + Integer.toString(proxies.size() -1));
+        System.out.println("[INFO] Useragents: " + Integer.toString(userAgents.size() -1) + "\n");
+        System.out.println("[INFO] Sending to respecitve threads...");
 
         for (var i = 0; i < proxies.size() -1 ; i++) {
 
             var proxy = proxies.get(rng.nextInt(proxies.size() -1 )); 
             var userAgent = userAgents.get(rng.nextInt(userAgents.size() -1)); 
 
-            RequestThread requestThread = new RequestThread(proxy, userAgent, latch);
-            requestThread.start();
+            try {
+                RequestThread requestThread = new RequestThread(proxy, userAgent, latch);
+                requestThread.start();
+
+            } catch (Exception e) {
+            }
+
+            
         }
 
         latch.await(); 
