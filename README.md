@@ -1,4 +1,5 @@
 # langenscheidt-bot
+For educational purposes only, i don't endorse any kind of malicious use.
 
 ## Compile and Run
 Simply run in your working directory
