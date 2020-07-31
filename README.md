@@ -14,5 +14,4 @@ Thats it.
 Or alternativley, the not so fancy way: 
 ```
 cd /home/$USER/langenscheidt-bot ; /home/$USER/YOUR_JAVA_HOME/bin/java -Dfile.encoding=UTF-8 @/tmp/cp_e680lagwbc0vie0wbqxusgxlh.argfile com.jan8192.App
-
 ```
