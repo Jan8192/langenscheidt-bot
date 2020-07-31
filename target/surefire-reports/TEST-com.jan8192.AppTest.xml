@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.jan8192.AppTest" time="0.015" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.jan8192.AppTest" time="0.022" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="gnome"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
@@ -16,7 +16,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/jan/Desktop/repo/langenscheidt-bot/target/surefire/surefirebooter9100568792096122978.jar /home/jan/Desktop/repo/langenscheidt-bot/target/surefire 2020-07-31T17-27-39_349-jvmRun1 surefire5879875136312280476tmp surefire_02620954000554399365tmp"/>
+    <property name="sun.java.command" value="/home/jan/Desktop/repo/langenscheidt-bot/target/surefire/surefirebooter13710227935693144298.jar /home/jan/Desktop/repo/langenscheidt-bot/target/surefire 2020-07-31T22-31-36_465-jvmRun1 surefire17889709191545748720tmp surefire_013227553083436779964tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/jan/Desktop/repo/langenscheidt-bot/target/test-classes:/home/jan/Desktop/repo/langenscheidt-bot/target/classes:/home/jan/.m2/repository/org/jsoup/jsoup/1.13.1/jsoup-1.13.1.jar:/home/jan/.m2/repository/com/opencsv/opencsv/3.8/opencsv-3.8.jar:/home/jan/.m2/repository/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.jar:/home/jan/.m2/repository/commons-beanutils/commons-beanutils/1.9.2/commons-beanutils-1.9.2.jar:/home/jan/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar:/home/jan/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar:/home/jan/.m2/repository/junit/junit/4.11/junit-4.11.jar:/home/jan/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -32,7 +32,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="/home/jan/Desktop/repo/langenscheidt-bot/target/surefire/surefirebooter9100568792096122978.jar"/>
+    <property name="surefire.real.class.path" value="/home/jan/Desktop/repo/langenscheidt-bot/target/surefire/surefirebooter13710227935693144298.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="11.0.8+10-post-Ubuntu-0ubuntu120.04"/>
     <property name="user.name" value="jan"/>

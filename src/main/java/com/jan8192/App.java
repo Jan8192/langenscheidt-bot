@@ -56,32 +56,29 @@ public class App {
 
         var filePath = "/home/jan/Desktop/repo/langenscheidt-bot/proxies.csv";
 
-        Document doc = Jsoup.connect("https://raw.githubusercontent.com/Agantor/viewerbot/master/Proxies_txt/good_proxy.txt").get();
+        Document doc = Jsoup
+                .connect("https://raw.githubusercontent.com/Agantor/viewerbot/master/Proxies_txt/good_proxy.txt").get();
 
         // oh well....
-        var proxyStrings = doc.body().toString().replace("<body>", "").replace("</body>", "").split(" "); 
+        var proxyStrings = doc.body().toString().replace("<body>", "").replace("</body>", "").split(" ");
 
         System.out.println("[INFO] Fetched proxies succesfully");
 
-
-        List<Proxy> proxies = new ArrayList<>(); 
-
+        List<Proxy> proxies = new ArrayList<>();
 
         for (var proxy : proxyStrings) {
 
-            if(proxy.isBlank())
+            if (proxy.isBlank())
                 continue;
 
-            var prox = proxy.split(":"); 
+            var prox = proxy.split(":");
 
             var proxyNew = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(prox[0], Integer.parseInt(prox[1])));
 
-            proxies.add(proxyNew); 
+            proxies.add(proxyNew);
         }
-    
 
-
-        return proxies; 
+        return proxies;
 
     }
 
@@ -90,21 +87,18 @@ public class App {
         var userAgents = getUserAgents();
         Random rng = new Random();
 
-       
-
-
         var proxies = getProxies();
 
-        var latch = new CountDownLatch(proxies.size() -1);
+        var latch = new CountDownLatch(proxies.size() - 1);
 
-        System.out.println("[INFO] Proxy amount:" + Integer.toString(proxies.size() -1));
-        System.out.println("[INFO] Useragents: " + Integer.toString(userAgents.size() -1) + "\n");
+        System.out.println("[INFO] Proxy amount:" + Integer.toString(proxies.size() - 1));
+        System.out.println("[INFO] Useragents: " + Integer.toString(userAgents.size() - 1) + "\n");
         System.out.println("[INFO] Sending to respecitve threads...");
 
-        for (var i = 0; i < proxies.size() -1 ; i++) {
+        for (var i = 0; i < proxies.size() - 1; i++) {
 
-            var proxy = proxies.get(rng.nextInt(proxies.size() -1 )); 
-            var userAgent = userAgents.get(rng.nextInt(userAgents.size() -1)); 
+            var proxy = proxies.get(rng.nextInt(proxies.size() - 1));
+            var userAgent = userAgents.get(rng.nextInt(userAgents.size() - 1));
 
             try {
                 RequestThread requestThread = new RequestThread(proxy, userAgent, latch);
@@ -113,10 +107,9 @@ public class App {
             } catch (Exception e) {
             }
 
-            
         }
 
-        latch.await(); 
+        latch.await();
 
     }
 }
