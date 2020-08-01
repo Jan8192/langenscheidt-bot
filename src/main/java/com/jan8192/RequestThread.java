@@ -1,22 +1,15 @@
 package com.jan8192;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
+
 import java.net.Proxy;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
-import javax.swing.text.Document;
-import javax.xml.crypto.Data;
-
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
-import org.jsoup.nodes.FormElement;
 
 public class RequestThread extends Thread {
 
@@ -28,13 +21,16 @@ public class RequestThread extends Thread {
 
     public static Integer connections = 0;
 
-    public static Random rng = new Random();
+    public static Integer successfullRequests = 0;
 
-    public RequestThread(Proxy proxy, String userAgent, CountDownLatch latch) {
+    public Random rng;
+
+    public RequestThread(Proxy proxy, String userAgent, CountDownLatch latch, Random rng) {
         super();
         this.latch = latch;
         this.proxy = proxy;
         this.userAgent = userAgent;
+        this.rng = rng;
     }
 
     @Override
@@ -42,32 +38,47 @@ public class RequestThread extends Thread {
 
         try {
 
-            Connection.Response resp = Jsoup // https://www.langenscheidt.com/jugendwort-des-jahres
+            var connection = Jsoup // https://www.langenscheidt.com/jugendwort-des-jahres
                     .connect(App.URL).proxy(proxy) //
-                    .userAgent(userAgent).method(Method.GET).execute();
+                    .userAgent(userAgent).method(Method.GET);
 
-            // System.out.println("[INFO] Connection to page with proxy: " +
-            // proxy.toString() + " and useragent: "
-            // + userAgent + " successfull!");
+            var sleepTime = rng.nextInt(5000);
+
+            System.out.println("[INFO] Established connection with proxy: " + proxy.toString() + " and useragent: "
+                    + userAgent + " successfully! Sleeping thread for " + sleepTime + " milliseconds...\n");
             connections++;
 
-            String[] ages = { "3067519627", "3067519628"
+            super.sleep(sleepTime);
 
-            };
+            String[] ages = { 
+                "3067519627", 
+                "3067519628", 
+                "3067519629",
+                // who considers 30+ youth? probably a Freudian slip. anyway...
+                "3067519630", };
 
-            var doc = Jsoup.connect(App.URL).proxy(proxy).userAgent(userAgent).method(Method.POST)
-                    .data("463803414", "3067519627").data("463803684", App.MY_WORD_MORE_LIKE_SENTENCE)
+            var ageIndex = rng.nextInt(ages.length - 1);
+
+            var doc = connection
+                    .data("463803414", ages[ageIndex])
+                    .data("463803684", App.MY_WORD_MORE_LIKE_SENTENCE)
                     .data("483089934[]", "3189794655")
                     .data("survey_data",
                             "4FoTYerhlqpl9PSGmuD5IQ4KOrG6PtkT0QQFIBIijog69_2F9RdsUcotipXcUgpxzrnRb3gFwT9Fo41Ud9JJuINDjyNvf6For4P8H3xuiHjJ8K7JjPAy_2Ff_2Bi1Nhwj_2BEpAWWWRPRUFIPv1Wt7Bhy0cxRNqqcOPzw5QmQ_2F_2FMFPnqAFa1aC8rVox9Q54qTb1IFCrgyzBW0iSMDPWFVV_2FWcUJ6VNTrRW3puAhlK7kQsY9NRriyf14gKeUFyRQE5zYeS1uOeKZsE5_2B4Mt7X_2FqzCsCUNSUnBmHujJpYXu7SdBu_2FFWXMea1qIdBbQIjnbMkvYn1Fg_2FpmsKUGAytKrYlt8ozSyfxh8DcWGAb2KxoCHu5swwGC5pNqJ7cXxVfKWwnxCe2TjNJItL516N6J25dlY6gISL3NmHvtKhymJlf6B7N5KwcReVHmKpLLje_2B45aNyEiCS_2FLDSpQ9O9Yjfd3bMv5IJTnSnzQ2GaJA5Pg57MYDgV90sbxJWVNa9ey_2BTNl_2B896XN48r_2FOoip3NY7p0mIIDfBk3lp8GGJa2NVl5Ki_2FNswiiA7n3ZhQYEiv_2BFyxzf5dw1aj")
-                    .data("response_quality_data", "").data("is_previous", "false").post();
+                    .data("response_quality_data", "")
+                    .data("is_previous", "false")
+                    .post();
 
-            System.out.println("[INFO] POST request to " + App.URL + " with proxy: " + proxy.toString()
-                    + " and useragent: " + userAgent + " was apparently successfull! Counting down latch...");
+            if (doc != null && doc.body().toString().contains("Dein Jugendwort ist jetzt bei uns aufgenommen")) {
+                successfullRequests++;
+                System.out.println("[INFO] POST request to " + App.URL + " with proxy: " + proxy.toString()
+                        + " and useragent: " + userAgent + " was apparently successfull! Counting down latch...\n");
+            }
 
         } catch (IOException e) {
         } catch (NoSuchElementException ne) {
 
+        } catch (InterruptedException e) {
         }
 
         latch.countDown();

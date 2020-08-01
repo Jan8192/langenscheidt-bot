@@ -1,29 +1,20 @@
 package com.jan8192;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
 
 import com.opencsv.CSVReader;
 
 import org.jsoup.Jsoup;
-import org.jsoup.Connection.Method;
 import org.jsoup.nodes.Document;
-import org.jsoup.Connection;
-import java.net.Proxy.Type;
 
 /**
  * Hello world!
@@ -31,7 +22,7 @@ import java.net.Proxy.Type;
  */
 public class App {
 
-    public static final String MY_WORD_MORE_LIKE_SENTENCE = "Umwertung aller Werte, das ist meine Formel für einen Akt höchster Selbstbesinnung der Menschheit, der in mir Fleisch und Genie geworden ist";
+    public static final String MY_WORD_MORE_LIKE_SENTENCE = "Bildungsdefizienteresbreitbandproletariat";
 
     public static final String URL = "https://www.surveymonkey.com/r/7JZRVLJ?embedded=1";
 
@@ -41,10 +32,7 @@ public class App {
         var reader = new CSVReader(new FileReader(filePath));
 
         String[] nextLine;
-        int lineNum = 0;
         while ((nextLine = reader.readNext()) != null) {
-            lineNum++;
-
             userAgents.add(nextLine[0]);
         }
 
@@ -54,13 +42,24 @@ public class App {
 
     private static List<Proxy> getProxies() throws IOException, InterruptedException {
 
-        var filePath = "/home/jan/Desktop/repo/langenscheidt-bot/proxies.csv";
-
-        Document doc = Jsoup
+        var doc1 = Jsoup
                 .connect("https://raw.githubusercontent.com/Agantor/viewerbot/master/Proxies_txt/good_proxy.txt").get();
 
-        // oh well....
-        var proxyStrings = doc.body().toString().replace("<body>", "").replace("</body>", "").split(" ");
+        var doc2 = Jsoup.connect("https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt")
+                .get();
+
+        List<Document> docs = new ArrayList<>();
+            docs.add(doc1);
+            docs.add(doc2);
+
+        List<String> proxyStrings = new ArrayList<>();
+
+        for (var document : docs) {
+            // oh well....
+            Collection<String> proxies = Arrays
+                    .asList(document.body().toString().replace("<body>", "").replace("</body>", "").split(" "));
+            proxyStrings.addAll(proxies);
+        }
 
         System.out.println("[INFO] Fetched proxies succesfully");
 
@@ -93,7 +92,6 @@ public class App {
 
         System.out.println("[INFO] Proxy amount:" + Integer.toString(proxies.size() - 1));
         System.out.println("[INFO] Useragents: " + Integer.toString(userAgents.size() - 1) + "\n");
-        System.out.println("[INFO] Sending to respecitve threads...");
 
         for (var i = 0; i < proxies.size() - 1; i++) {
 
@@ -101,7 +99,7 @@ public class App {
             var userAgent = userAgents.get(rng.nextInt(userAgents.size() - 1));
 
             try {
-                RequestThread requestThread = new RequestThread(proxy, userAgent, latch);
+                RequestThread requestThread = new RequestThread(proxy, userAgent, latch, rng);
                 requestThread.start();
 
             } catch (Exception e) {
@@ -110,6 +108,7 @@ public class App {
         }
 
         latch.await();
-
+        System.out.println("[INFO] Sent " + RequestThread.connections + " requests. " + "Succesfull ones: "
+                + RequestThread.successfullRequests);
     }
 }

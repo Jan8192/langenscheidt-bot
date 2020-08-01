@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.jsoup.Jsoup;
 
 public class GenerateCheckSum {
     // This sum was generated with http://onlinemd5.com/
