@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.jan8192.AppTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s - in com.jan8192.AppTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s - in com.jan8192.AppTest
