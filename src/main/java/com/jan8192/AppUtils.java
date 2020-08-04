@@ -16,7 +16,7 @@ import org.jsoup.nodes.Document;
 
 public class AppUtils {
 
-    private static List<String> getUserAgents() throws IOException {
+    public List<String> getUserAgents() throws IOException {
         List<String> userAgents = new ArrayList<>();
         var filePath = "/home/jan/Desktop/repo/langenscheidt-bot/user_agents.csv";
         var reader = new CSVReader(new FileReader(filePath));
@@ -30,7 +30,7 @@ public class AppUtils {
 
     }
 
-    private List<Proxy> getProxies() throws IOException, InterruptedException {
+    public List<Proxy> getProxies() throws IOException, InterruptedException {
 
         var doc1 = Jsoup
                 .connect("https://raw.githubusercontent.com/Agantor/viewerbot/master/Proxies_txt/good_proxy.txt").get();
@@ -71,14 +71,5 @@ public class AppUtils {
 
     }
 
-    public List<Object> get() throws IOException, InterruptedException {
-
-        List<Object> utils = new ArrayList<>();
-
-        utils.add(getProxies());
-        utils.add(getUserAgents());
-
-        return utils;
-    }
 
 }

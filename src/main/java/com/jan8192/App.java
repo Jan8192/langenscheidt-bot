@@ -2,9 +2,7 @@ package com.jan8192;
 
 import java.io.IOException;
 
-import java.net.Proxy;
 
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
@@ -20,10 +18,10 @@ public class App {
 
     public static void main(String... args) throws IOException, InterruptedException {
 
-        var utils = new AppUtils().get();
+        var utils = new AppUtils(); 
 
-        List<Proxy> proxies = (List<Proxy>) utils.get(0);
-        List<String> userAgents = (List<String>) utils.get(1);
+        var proxies = utils.getProxies();
+        var userAgents = utils.getUserAgents(); 
 
         Random rng = new Random();
 
